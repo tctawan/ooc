@@ -1,3 +1,5 @@
+package ooc.hw1;
+
 import org.apache.commons.io.DirectoryWalker;
 
 import java.io.*;
@@ -16,6 +18,11 @@ public class DirWalker extends DirectoryWalker {
 
     public void run(File startDirectory) throws IOException {
         walk(startDirectory, new ArrayList());
+        System.out.println("Total num of files: " + this.noOfFiles);
+        System.out.println("Total num of dirs: " + this.noOfDirs);
+        System.out.println("Total num of exts: " + this.fileExts.size());
+        System.out.println("List of unique exts: " + this.fileExts.keySet());
+        System.out.println("Total number of files for exts: " + this.fileExts);
     }
 
     protected boolean handleDirectory(File directory, int depth, Collection results){
@@ -26,24 +33,11 @@ public class DirWalker extends DirectoryWalker {
     protected void handleFile(File file, int depth, Collection results){
         noOfFiles++;
         String name = file.getName();
-        String extension = "";
+        String ext = "";
         if(name.contains(".")){
-            extension = name.substring(name.lastIndexOf("."));
+            ext = name.substring(name.lastIndexOf("."));
         }
-        int count = fileExts.containsKey(extension) ? fileExts.get(extension) : 0;
-        fileExts.put(extension, count + 1);
+        int count = fileExts.containsKey(ext) ? fileExts.get(ext) : 0;
+        fileExts.put(ext, count + 1);
     }
-
-    public static void main(String[] args) throws IOException {
-        DirWalker walker = new DirWalker();
-        File startDirectory = new File("/Users/tctawan/ooc/hw1/docs");
-        walker.run(startDirectory);
-        System.out.println(walker.noOfFiles);
-        System.out.println(walker.noOfDirs);
-        System.out.println(walker.fileExts.size());
-        System.out.println(walker.fileExts.keySet());
-        System.out.println(walker.fileExts);
-
-    }
-
 }
