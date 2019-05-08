@@ -9,10 +9,10 @@ public class DirWalker extends DirectoryWalker {
 
     private int noOfFiles = 0;
     private int noOfDirs = 0;
-    private HashMap<String,Integer> fileExts = new HashMap<String, Integer>();
+    private HashMap<String, Integer> fileExts = new HashMap<String, Integer>();
 
 
-    public DirWalker(){
+    public DirWalker() {
         super();
     }
 
@@ -25,16 +25,16 @@ public class DirWalker extends DirectoryWalker {
         System.out.println("Total number of files for exts: " + this.fileExts);
     }
 
-    protected boolean handleDirectory(File directory, int depth, Collection results){
+    protected boolean handleDirectory(File directory, int depth, Collection results) {
         noOfDirs++;
         return true;
     }
 
-    protected void handleFile(File file, int depth, Collection results){
+    protected void handleFile(File file, int depth, Collection results) {
         noOfFiles++;
         String name = file.getName();
         String ext = "";
-        if(name.contains(".")){
+        if (name.contains(".")) {
             ext = name.substring(name.lastIndexOf("."));
         }
         int count = fileExts.containsKey(ext) ? fileExts.get(ext) : 0;

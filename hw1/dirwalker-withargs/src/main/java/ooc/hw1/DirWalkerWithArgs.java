@@ -19,8 +19,19 @@ public class DirWalkerWithArgs extends DirectoryWalker {
             super();
         }
 
-        private void walk(File startDirectory) throws IOException {
-            walk(startDirectory, new ArrayList());
+        private void walk(File startDirectory){
+            try {
+                walk(startDirectory, new ArrayList());
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+
+        private void printHelp(Options options){
+            HelpFormatter formatter = new HelpFormatter();
+            String footer = "ฮั่นแน่ ชอบเร่งเครื่องหรอน้อง";
+            formatter.printHelp("mvn exec:java -Dexec.mainClass=\"ooc.hw1.Main\" -Dexec.args=",
+                    null,options,footer,true);
         }
 
         protected boolean handleDirectory(File directory, int depth, Collection results){
@@ -33,7 +44,7 @@ public class DirWalkerWithArgs extends DirectoryWalker {
             String name = file.getName();
             String extension = "";
             if(name.contains(".")){
-                extension = name.substring(name.lastIndexOf("."));
+                extension = name.substring(name.lastIndexOf(".") + 1);
             }
             int count = fileExts.containsKey(extension) ? fileExts.get(extension) : 0;
             fileExts.put(extension, count + 1);
@@ -56,40 +67,43 @@ public class DirWalkerWithArgs extends DirectoryWalker {
             return options;
         }
 
-        public void run(String[] args) throws ParseException {
+        public void run(String[] args){
             CommandLineParser parser = new DefaultParser();
             Options options = this.createOptions();
-            CommandLine cmd = parser.parse(options , args);
+            try {
+                CommandLine cmd = parser.parse(options , args);
+                if(cmd.hasOption("f")){
+                    String filename = cmd.getOptionValue("f");
+                    File startDirectory = new File(filename);
 
-            if(cmd.hasOption("f")){
-                String filename = cmd.getOptionValue("f");
-                File startDirectory = new File(filename);
-                try {
-                    this.walk(startDirectory);
-                }catch (IOException e){
-                    e.printStackTrace();
-                }
+                    walk(startDirectory);
 
-                if(cmd.hasOption("a")){
-                    System.out.println("Total number of files: " + this.noOfFiles);
-                }
-                if(cmd.hasOption("b")){
-                    System.out.println("Total number of dirs: " + this.noOfDirs);
+                    if(cmd.hasOption("a")){
+                        System.out.println("Total number of files: " + this.noOfFiles);
+                    }
+                    if(cmd.hasOption("b")){
+                        System.out.println("Total number of dirs: " + this.noOfDirs);
 
-                }
-                if(cmd.hasOption("c")){
-                    System.out.println("Total number of unique file extensions: " + this.fileExts.size());
-                }
-                if(cmd.hasOption("d")){
-                    System.out.println("All unique file extensions: " + this.fileExts.keySet());
+                    }
+                    if(cmd.hasOption("c")){
+                        System.out.println("Total number of unique file extensions: " + this.fileExts.size());
+                    }
+                    if(cmd.hasOption("d")){
+                        System.out.println("All unique file extensions: " + this.fileExts.keySet());
 
-                }
-                if(cmd.hasOption("num-ext")){
-                    String ext = cmd.getOptionValue("num-ext");
-                    System.out.println("Total number of file for " + ext + " : " + this.fileExts.get(ext)  );
+                    }
+                    if(cmd.hasOption("num-ext")){
+                        String ext = cmd.getOptionValue("num-ext");
+                        System.out.println("Total number of file for " + ext + " : " + this.fileExts.get(ext)  );
 
+                    }
+                }else{
+                    printHelp(options);
                 }
+            } catch (ParseException e) {
+                printHelp(options);
             }
+
         }
 
 }

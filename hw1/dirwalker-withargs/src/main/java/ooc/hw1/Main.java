@@ -7,11 +7,7 @@ public class Main {
 
             DirWalkerWithArgs walker = new DirWalkerWithArgs();
 
-            try {
-                walker.run(args);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+            walker.run(args);
 
     }
 }

@@ -25,8 +25,8 @@ public class Main {
         }
 
         try{
-            download3.download("http://www.pdf995.com/samples/pdf.pdf"
-                    ,"/Users/tctawan/Downloads/sample-3.pdf" );
+            download3.download("https://cs.muic.mahidol.ac.th/courses/ooc/docs/api/org/omg/CosNaming/NamingContextExtPackage/package-use.html#org.omg.CosNaming.NamingContextExtPackage"
+                    ,"/Users/tctawan/Downloads/sample-3" );
         } catch (IOException e){
             e.printStackTrace();
         }
